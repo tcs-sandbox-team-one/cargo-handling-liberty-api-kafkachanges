@@ -11,7 +11,7 @@ import com.cargotracker.handling.application.internal.commandservices.HandlingAc
 import com.cargotracker.handling.interfaces.rest.dto.HandlingActivityRegistrationResource;
 import com.cargotracker.handling.interfaces.rest.transform.HandlingActivityRegistrationCommandDTOAssembler;
 
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Controller    // This means that this class is a Controller
 @RequestMapping("/cargohandling")
 public class CargoHandlingController {
