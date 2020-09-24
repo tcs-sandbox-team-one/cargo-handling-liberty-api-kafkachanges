@@ -44,8 +44,8 @@ swagger:
   baseApiPackage:
     - com.cargotracker
     - com.ibm.health
-  title: cargo-booking-service
-  description: cargo-booking-service
+  title: cargo-handling-service
+  description: cargo-handling-service
   version: 1.0.0
   termsOfServiceUrl: ''
   license: MIT
