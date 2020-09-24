@@ -1,4 +1,4 @@
-package com.cargotracker.handling.infrastructure.brokers.kafka;
+package com.cargotracker.handling.infrastructure.brokers.rabbitmq;
 
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;
@@ -8,10 +8,7 @@ import org.springframework.messaging.MessageChannel;
  */
 public interface CargoEventSource {
 	String cargoHandlingChannel2 = "cargoHandlingChannel2";
-	
-	  @Output("cargoHandlingChannel1") MessageChannel cargoHandling1();
-	  
+
 	  @Output(cargoHandlingChannel2) 
 	  MessageChannel cargoHandling2();
-	 
 }

@@ -1,113 +1,71 @@
 spring:
-  profiles: 
-    active: default
   application:
-    name: "${IMAGE_NAME:template-spring-boot}"
+    name: '${IMAGE_NAME:template-spring-boot}'
   cloud:
     stream:
-      kafka:
-        binder:
-          brokers: localhost:9092
-      bindings:     
-        cargoHandlingChannel1:
-          destination: cargoHandlings1
-          group: cargoHandlingsQueue1
+      function:
+        definition: cargoHandlingChannel2
+      bindings:
         cargoHandlingChannel2:
           destination: cargoHandlings2
+          binder: kafka
           group: cargoHandlingsQueue2
-          contentType: 'application/json'         
+          contentType: application/json
+      binders:
+        kafka:
+          type: kafka
+          environment:
+            spring:
+              cloud:
+                stream:
+                  kafka:
+                    binder.brokers: >-
+                      evtstreams-ibm-es-proxy-route-broker-0-eventstreams.cloud-integration-224380-6fb0b86391cd68c8282858623a1dddff-0000.eu-gb.containers.appdomain.cloud:443
+      kafka.binder:
+        configuration:
+          security.protocol: SASL_SSL
+          sasl:
+            jaas.config: >-
+              org.apache.kafka.common.security.plain.PlainLoginModule required
+              username="token"
+              password="AziCdowuQBhedmSbLgMTr-IhNZ-U_el1IOcOHZiESCNp";
+            mechanism: PLAIN
+          ssl:
+            protocol: TLSv1.2
+            truststore:
+              location: /config/jks/es-cert.jks
+              password: password
   datasource:
-    url: "jdbc:mysql://localhost:3306/handlingmsdb?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=EST"
+    url: >-
+      jdbc:mysql://localhost:3306/handlingmsdb?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=EST
     username: handlingmsdb
     password: password
-
 swagger:
   baseApiPackage:
-  - "com.cargotracker"
-  - "com.ibm.health"
-  title: "cargo-handling-service"
-  description: "cargo-handling-service"
-  version: "1.0.0"
-  termsOfServiceUrl: ""
-
-  license: "MIT"
-  licenseUrl: ""
-
+    - com.cargotracker
+    - com.ibm.health
+  title: cargo-booking-service
+  description: cargo-booking-service
+  version: 1.0.0
+  termsOfServiceUrl: ''
+  license: MIT
+  licenseUrl: ''
 management:
   endpoints:
     web:
-      base-path: "/metrics"
+      base-path: /metrics
       exposure:
-        include: "*"
-
+        include: '*'
 server:
-  port: ${PORT:8004}
-
+  port: '${PORT:8001}'
 logging:
   level:
-    ROOT: ${LOG_LEVEL:INFO}
-    com.ibm.hello: DEBUG
-    com.ibm.cloud_garage: DEBUG
+    ROOT: '${LOG_LEVEL:INFO}'
     org.springframework: ERROR
     org.springframework.web: WARN
     org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
     ch.qos.logback.classic: ERROR
   pattern:
-    console: "%d{YYYY-dd-MM HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %X{X-B3-TraceId:-} ${spring.application.name} %logger{39}.%M %L - %msg%n"
----
-spring:
-  profiles: ocp
-  application:
-    name: "${IMAGE_NAME:template-spring-boot}"
-  cloud:
-    stream:
-      bindings:     
-        cargoHandlingChannel1:
-          destination: cargoHandlings1
-          group: cargoHandlingsQueue1
-        cargoHandlingChannel2:
-          destination: cargoHandlings2
-          group: cargoHandlingsQueue2         
-  datasource:
-    url: ${handlingdburl}
-    username: ${handlingdb.user.name}
-    password: ${handlingdb.user.password}
-  rabbitmq:
-    host: ${rabbitmqhost}
-    port: ${rabbitmqport}
-    username: ${rabbitmq.user.name}
-    password: ${rabbitmq.user.password} 
-
-swagger:
-  baseApiPackage:
-  - "com.cargotracker"
-  - "com.ibm.health"
-  title: "cargo-handling-service"
-  description: "cargo-handling-service"
-  version: "1.0.0"
-  termsOfServiceUrl: ""
-
-  license: "MIT"
-  licenseUrl: ""
-
-management:
-  endpoints:
-    web:
-      base-path: "/metrics"
-      exposure:
-        include: "*"
-
-server:
-  port: ${PORT:8004}
-
-logging:
-  level:
-    ROOT: ${LOG_LEVEL:INFO}
-    com.ibm.hello: DEBUG
-    com.ibm.cloud_garage: DEBUG
-    org.springframework: ERROR
-    org.springframework.web: WARN
-    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
-    ch.qos.logback.classic: ERROR
-  pattern:
-    console: "%d{YYYY-dd-MM HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %X{X-B3-TraceId:-} ${spring.application.name} %logger{39}.%M %L - %msg%n"
+    console: >-
+      %d{YYYY-dd-MM HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level)
+      %X{X-B3-TraceId:-} ${spring.application.name} %logger{39}.%M %L - %msg%n

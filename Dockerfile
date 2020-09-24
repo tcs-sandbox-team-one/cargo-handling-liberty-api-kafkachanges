@@ -13,8 +13,10 @@ RUN mvn --version
 
 RUN mkdir -p /config/apps && \
     mkdir -p /config/lib && \
+    mkdir -p /config/jks && \
     cp ./src/main/liberty/config/server.xml /config && \
     cp ./target/cargo-handling-service-1.0.war /config/apps/cargo-handling-service-1.0.war && \
+    cp ./src/main/resources/es-cert.jks /config/jsk/es-cert.jks && \
     if [ ! -z "$(ls ./src/main/liberty/lib)" ]; then \
         cp ./src/main/liberty/lib/mysql-connector-java-8.0.21.jar /config/lib/mysql-connector-java-8.0.21.jar; \
     fi
