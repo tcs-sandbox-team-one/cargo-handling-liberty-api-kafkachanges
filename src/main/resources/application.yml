@@ -37,9 +37,9 @@ spring:
               password: password
   datasource:
     url: >-
-      jdbc:mysql://10.242.0.6:3306/handlingmsdb?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=EST&useSSL=false&allowPublicKeyRetrieval=true
+      jdbc:mysql://mysql-cargo-dev:3306/handlingmsdb?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=EST&useSSL=false&allowPublicKeyRetrieval=true
     username: handlingmsdb
-    password: password
+    password: handlingmsdb
 swagger:
   baseApiPackage:
     - com.cargotracker
